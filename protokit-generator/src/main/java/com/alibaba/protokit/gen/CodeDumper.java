@@ -54,7 +54,6 @@ public class CodeDumper {
             codePrinter.close();
         }
 
-        System.out.println("end");
     }
 
     private static void printMessages(List<DescriptorProtos.DescriptorProto> messageTypeList, CodePrinter codePrinter) {

@@ -67,6 +67,7 @@
     <modules>
         <module>protokit-generator</module>
         <module>protokit-maven-plugin</module>
+        <module>protokit-demo</module>
     </modules>
 
     <dependencyManagement>

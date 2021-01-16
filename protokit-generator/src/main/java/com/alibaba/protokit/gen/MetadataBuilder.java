@@ -127,7 +127,47 @@ public class MetadataBuilder {
 
         Type elemType = pType.getActualTypeArguments()[0];
         if (elemType instanceof ParameterizedType) {
-            System.out.println();
+            ParameterizedType elemPType = (ParameterizedType) elemType;
+            Class<?> elemRawClass = (Class<?>) elemPType.getRawType();
+
+            String mapTypeName = "";
+            String fieldNameInMap = "";
+            {
+                if (nested) {
+                    mapTypeName = StringUtils.capitalize(messageBuilder.getName()) + "." +
+                            StringUtils.substringAfterLast(messageBuilder.getName(), ".");
+                    fieldNameInMap = StringUtils.uncapitalize(StringUtils.substringAfterLast(messageBuilder.getName(), "."));
+                } else {
+                    mapTypeName = messageBuilder.getName() + "." + StringUtils.capitalize(name);
+                    fieldNameInMap = StringUtils.uncapitalize(name);
+                }
+                if (Collection.class.isAssignableFrom(elemRawClass)) {
+                    mapTypeName += "List";
+                    fieldNameInMap += "List";
+                } else if (Map.class.isAssignableFrom(elemRawClass)) {
+                    mapTypeName += "Map";
+                    fieldNameInMap += "Map";
+                } else {
+                    throw new UnsupportedOperationException();
+                }
+            }
+            // Build sub Map
+            DescriptorProtos.DescriptorProto.Builder mapTypeBuilder = DescriptorProtos.DescriptorProto.newBuilder()
+                    .setName(mapTypeName);
+            // key
+            DescriptorProtos.FieldDescriptorProto.Builder valueField =
+                    DescriptorProtos.FieldDescriptorProto.newBuilder()
+                            .setName("value")
+                            .setNumber(2)
+                            .setType(DescriptorProtos.FieldDescriptorProto.Type.TYPE_MESSAGE)
+                            .setTypeName(mapTypeName);
+            processType(elemPType, fieldNameInMap, 1, mapTypeBuilder, fileName, true);
+
+            messageBuilder.addNestedType(mapTypeBuilder.build());
+
+            fieldBuilder.setType(DescriptorProtos.FieldDescriptorProto.Type.TYPE_MESSAGE)
+                    .setLabel(DescriptorProtos.FieldDescriptorProto.Label.LABEL_REPEATED)
+                    .setTypeName(mapTypeName);
         } else if (elemType instanceof Class<?>) {
             Class<?> clazz = (Class<?>) elemType;
             DescriptorProtos.FieldDescriptorProto.Type grpcType = toGrpcType(clazz);

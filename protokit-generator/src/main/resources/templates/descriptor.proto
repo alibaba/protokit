@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option java_package = "{{javaPackage}}";
+option java_multiple_files = true;
+
+package {{package}};
+
+{{#imports}}
+import "{{.}}";
+{{/imports}}
+
+{{#messages}}
+{{> message}}
+{{/messages}}
+

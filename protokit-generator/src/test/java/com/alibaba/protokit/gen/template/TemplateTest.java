@@ -18,7 +18,7 @@ public class TemplateTest {
 
     @Test
     public void test() throws IOException {
-        MustacheTemplateRenderer mustacheTemplateRenderer = new MustacheTemplateRenderer("templates", "proto");
+        MustacheTemplateRenderer mustacheTemplateRenderer = new MustacheTemplateRenderer("pb-templates", "proto");
 
         Map<String, Object> model = new HashMap<>();
 

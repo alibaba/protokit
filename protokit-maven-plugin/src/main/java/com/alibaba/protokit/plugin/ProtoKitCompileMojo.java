@@ -3,7 +3,6 @@ package com.alibaba.protokit.plugin;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -15,7 +14,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
-import com.alibaba.protokit.gen.CodeDumper;
+import com.alibaba.protokit.gen.template.ProtoDumper;
 
 /**
  * 
@@ -48,12 +47,10 @@ public class ProtoKitCompileMojo extends AbstractMojo {
         ClassLoader classLoader = getClassLoader();
 
         try {
-            List<Class<?>> classList = new ArrayList<Class<?>>();
             for (String clazz : classNames) {
                 Class<?> pojoClass = classLoader.loadClass(clazz);
-                classList.add(pojoClass);
+                ProtoDumper.dumpMessage(pojoClass, protoOutputDirectory.getAbsolutePath());
             }
-            CodeDumper.dump(classList, protoOutputDirectory.getAbsolutePath());
             getLog().error("" + classNames);
         } catch (Exception e) {
             e.printStackTrace();

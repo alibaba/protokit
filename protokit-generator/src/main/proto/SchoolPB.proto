@@ -3,21 +3,18 @@ syntax = "proto3";
 option java_package = "com.aaa";
 option java_multiple_files = true;
 
+import "StudentPB.proto";
+
 package com.aaa;
 
-message StudentPB {
-  fixed64 id = 1;
-  string name = 2;
-  int32 age = 3;
-  bool checked = 4;
-}
 
 message SchoolPB {
   string name = 1;
-  repeated StudentPB students = 2;
+  repeated com.abc.StudentPB students = 2;
   
-  map<string, StudentPB> nameToStudents = 3;
-  map<fixed64, StudentPB> idToStudents = 4;
+  map<string, com.abc.StudentPB> nameToStudents = 3;
+  map<fixed64, com.abc.StudentPB> idToStudents = 4;
+  repeated int32 ids = 5;
 }
 
 message CityPB {

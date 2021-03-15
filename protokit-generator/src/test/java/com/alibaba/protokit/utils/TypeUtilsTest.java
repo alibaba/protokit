@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import com.alibaba.protokit.annotation.Type;
 
+import io.protostuff.compiler.model.Field;
 import io.protostuff.compiler.model.ScalarFieldType;
 
 /**

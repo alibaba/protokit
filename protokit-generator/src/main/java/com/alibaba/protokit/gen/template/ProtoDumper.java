@@ -13,6 +13,7 @@ import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 
 import com.alibaba.protokit.annotation.PbAnnotationParser;
+import com.alibaba.protokit.model.MetaData;
 import com.alibaba.protokit.utils.NameUtils;
 
 import io.protostuff.compiler.model.Field;
@@ -26,17 +27,14 @@ import io.protostuff.compiler.model.Proto;
  */
 public class ProtoDumper {
 
-    public static void dump(List<Class<?>> classList, String absolutePath) {
-        // TODO Auto-generated method stub
-        
-    }
     
     public static String dumpMessage(Class<?> clazz) throws IOException {
         String filePath = clazz.getCanonicalName().replace(".", "/") + ".proto";
         PbAnnotationParser pbAnnotationParser = new PbAnnotationParser();
-        Optional<Proto> protoOptional = pbAnnotationParser.parse(clazz);
+        Optional<MetaData> metaDataOptional = pbAnnotationParser.parse(clazz);
 
-        Proto proto = protoOptional.get();
+        MetaData metaData = metaDataOptional.get();
+        Proto proto = metaData.getProto();
         STGroup group = new STGroupFile("proto3.stg");
         group.registerRenderer(Field.class, new FieldRenderer(proto, group));
 

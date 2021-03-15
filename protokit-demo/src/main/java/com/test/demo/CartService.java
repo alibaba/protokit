@@ -1,4 +1,4 @@
-package com.alibaba.protokit.gen;
+package com.test.demo;
 
 import java.util.List;
 import java.util.Map;

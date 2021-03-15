@@ -1,10 +1,10 @@
 package com.abc;
 
-import com.aaa.StudentPB;
-import com.aaa.StudentPB.Builder;
+import com.abc.StudentPB;
+import com.abc.StudentPB.Builder;
 import com.alibaba.protokit.gen.PbConvertor;
 
-public class StudentPbConvertor implements PbConvertor<Student>{
+public class StudentPbConvertor implements PbConvertor<Student> {
 
     @Override
     public <T> T convertToPbObject(Student object) {
@@ -19,14 +19,13 @@ public class StudentPbConvertor implements PbConvertor<Student>{
 
     @Override
     public Student fromPbObject(Object pbObject) {
-        StudentPB object = (StudentPB)pbObject;
+        StudentPB object = (StudentPB) pbObject;
         Student returnObject = new Student();
         returnObject.setId(object.getId());
         returnObject.setAge(object.getAge());
         returnObject.setName(object.getName());
         returnObject.setChecked(object.getChecked());
-        return null;
+        return returnObject;
     }
-
 
 }

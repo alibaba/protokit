@@ -1,0 +1,9 @@
+syntax = "proto3";
+package com.alibaba.protokit.gen;
+option java_multiple_files = true;
+option java_package = 'com.alibaba.protokit.gen';
+message UserPB {
+    string name = 1;
+    int32 age = 2;
+}
+

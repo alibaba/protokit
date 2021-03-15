@@ -17,7 +17,7 @@ import org.reflections.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.protokit.common.Constants;
+import com.alibaba.protokit.model.MetaData;
 import com.alibaba.protokit.utils.NameUtils;
 
 import io.protostuff.compiler.model.DynamicMessage.Value;
@@ -39,7 +39,10 @@ import io.protostuff.compiler.model.Syntax;
 public class PbAnnotationParser {
     private static final Logger logger = LoggerFactory.getLogger(PbAnnotationParser.class);
 
-    public Optional<Proto> parse(Class<?> clazz) {
+    public Optional<MetaData> parse(Class<?> clazz) {
+
+        MetaData metaData = new MetaData();
+
         @SuppressWarnings("unchecked")
         Set<Annotation> annotations = ReflectionUtils.getAnnotations(clazz,
                 a -> a.annotationType().equals(PbMessage.class));
@@ -58,6 +61,10 @@ public class PbAnnotationParser {
         proto.setSyntax(new Syntax(proto, "proto3"));
         Package pkg = new Package(proto, packageName);
         proto.setPackage(pkg);
+
+        metaData.setClassName(clazz.getSimpleName());
+        metaData.setPbClassName(NameUtils.pbClassName(clazz));
+        metaData.setPackageName(packageName);
 
         Message message = new Message(proto);
         message.setName(NameUtils.pbClassName(clazz));
@@ -135,7 +142,9 @@ public class PbAnnotationParser {
             }
 
         }
-        return Optional.of(proto);
+
+        metaData.setProto(proto);
+        return Optional.of(metaData);
     }
 
     private FieldType toPbType(Class<?> clazz) {
@@ -155,9 +164,9 @@ public class PbAnnotationParser {
             return null;
         } else {
             // TODO Message?
-            // 对于已经是PB的类，要处理，比如 List<StudentPB> 
+            // 对于已经是PB的类，要处理，比如 List<StudentPB>
             Message message = new Message(null);
-            message.setName(NameUtils.pbClassName(clazz));
+            message.setName(NameUtils.pbFieldTypeName(clazz));
             message.setFullyQualifiedName(NameUtils.pbFullyQualifiedName(clazz));
             return message;
         }

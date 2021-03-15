@@ -1,26 +1,13 @@
 syntax = "proto3";
 
-option java_package = "com.ooo";
+option java_package = "com.abc";
 option java_multiple_files = true;
 
-package com.xxx;
+package com.abc;
 
 message StudentPB {
   fixed64 id = 1;
   string name = 2;
   int32 age = 3;
-
-}
-
-message SchoolPB {
-  string name = 1;
-  repeated StudentPB students = 2;
-  
-  map<string, StudentPB> nameToStudents = 3;
-  map<fixed64, StudentPB> idToStudents = 4;
-}
-
-message CityPB {
-  string name = 1;
-  repeated SchoolPB students = 2;
+  bool checked = 4;
 }
